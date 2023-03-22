@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.11)  22 MAR 2023 20:04
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.11)  22 MAR 2023 21:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -454,15 +454,15 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 \tf@toc=\write3
 \openout3 = `slam学习笔记.toc'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 19.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 21.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 19.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 21.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (5.45532pt too wide) in paragraph at lines 65--67
+Overfull \hbox (5.45532pt too wide) in paragraph at lines 68--70
 []\TU/FandolSong-Regular(0)/m/n/10 上 述 坐 标 系 之 间 的 变 换 关 系 在 实 现 多 次 变 换 时 会 显 得 十 分 繁 琐，|  如 进 行 了 两 次 变 换 的 表 达 式 为 $[] \OT1/cmr/m/n/10 = [][]([][][] +
  []
 
@@ -472,10 +472,10 @@ Overfull \hbox (5.45532pt too wide) in paragraph at lines 65--67
 Here is how much of TeX's memory you used:
  8915 strings out of 476179
  225865 string characters out of 5809544
- 593033 words of memory out of 5000000
+ 594033 words of memory out of 5000000
  29542 multiletter control sequences out of 15000+600000
  475758 words of font info for 60 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 89i,10n,97p,365b,269s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,17n,97p,365b,269s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on slam学习笔记.pdf (2 pages).
