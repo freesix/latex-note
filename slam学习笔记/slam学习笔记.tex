@@ -1,5 +1,5 @@
 \documentclass[10pt]{article}
-\usepackage[a4paper,left=2cm,right=2cm,top=1cm,bottom=1cm]{geometry}
+\usepackage[a4paper,left=2cm,right=2cm,top=1.5cm,bottom=1.5cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -8,7 +8,10 @@
 \usepackage{abstract}
 \usepackage{ctex}
 \usepackage{mathtools}
-
+\usepackage[hidelinks]{hyperref}
+%断词相关
+\hyphenpenalty=5000
+\tolerance=1000
 
 \begin{document}
 \tableofcontents
@@ -106,7 +109,155 @@ $textbf{z}_{k,j}$，同样可以用一个抽象的函数$h$来表示这样一个
 \end{align}
 
 关于旋转轴$\textbf{n}$，在旋转轴上向量在旋转后不发生改变，说明：
-% \begin{align*}
+\begin{align}
+    \mathbf{Rn}=\mathbf{n}
+\end{align}
+
+因此，转轴\textbf{n}是矩阵\textbf{R}特征值1对应的特征向量，求解此方程再归一化就得到了旋转轴。
+
+\textbf{欧拉角}
+
+欧拉角有一个万向锁的问题，所以不经常用。
+
+\textbf{四元数}
+
+在复平面，一个复向量的旋转$\theta$可以乘$e^{i\theta}$来表示，这个是极坐标的表示，如果需要用到普通形式，用欧拉公式转换一下就好。在三维旋转也可用一个单位四元数来表示，
+四元数$\mathbf{q}$拥有一个实部和三个虚部：$\mathbf{q}=q_0+q_1i+q_2j+q_3k$，这三个虚部满足以下关系：
+\begin{equation} %这个示例是如何组织公式块
+   \left\{\begin{aligned} 
+   &i^2=j^2=k^2=-1\\
+   &ij=k,ji=-k\\
+   &jk=i,kj=-i\\
+   &ki=j,ik=-j
+    \end{aligned}\right.
+\end{equation}
+
+如果将i，j，k看成三个坐标轴，那么它们与自己的乘法和复数一样，相互之间的乘法和外积一样。四元数的另外一种表示方式：
+\begin{align}
+    \mathbf{q}=[\mathbf{s},\mathbf{v}]^T,\qquad \mathbf{s}=q_0\in \mathbb{R},\quad \mathbf{v}=[q_1,q_2,q_3]^T \in \mathbb{R}^{3} 
+\end{align}
+
+这里\textbf{s}为四元数的实部，\textbf{v}为虚部。
+
+四元数的运算
+
+1、加法和减法
+\begin{align}
+    \mathbf{q}_a\pm \mathbf{q}_b=[\mathbf{s}_a\pm\mathbf{s}_b,\mathbf{v}_a\pm\mathbf{v}_b]^T 
+\end{align}
+
+2、乘法，就是将每一项相乘
+\begin{equation}
+\begin{aligned}
+    \mathbf{q}_a \mathbf{q}_b=&\mathbf{s}_a\mathbf{s}_b-x_ax_b-y_ay_b-z_az_b\\
+    &+(s_ax_b+x_as_b+y_az_b-z_ay_b)i\\
+    &+(s_ay_b-x_az_b+y_as_b+z_ax_b)j\\
+    &+(s_az_b+x_ay_b-y_ax_b+z_as_b)k 
+\end{aligned}
+\end{equation}
+
+上式复杂但有规律，如果改写成向量形式并利用内外积运算，会更加简洁：
+\begin{align} 
+    \mathbf{q}_a\mathbf{q}_b=[\mathbf{s}_a\mathbf{s}_b-\mathbf{v}_a^T\mathbf{v}_b,\mathbf{s}_a\mathbf{v}_b+
+    \mathbf{s}_b\mathbf{v}_a+\mathbf{v}_a \times \mathbf{v}_b]^T
+\end{align}
+
+四元数的乘法通常是不可交换的，除非$\mathbf{v}_a$和$\mathbf{v}_b$是共线的，这时最后一项外积为零。
+
+3、模长
+
+四元数模场定义为：
+\begin{align} 
+    ||\mathbf{q}_a|| = \sqrt{\mathbf{s}_a^2+x_a^2+y_a^2+z_a^2}
+\end{align}
+
+可以验证的是：$||\mathbf{q}_a\mathbf{q}_b|| = ||\mathbf{q}_q||||\mathbf{q}_b||$
+
+4、共轭
+
+四元数的共轭就是把虚部取成相反数，四元数共轭与其本身相乘会得到一个实四元数，实部为其模长的平方。
+
+5、逆
+\begin{align} 
+    \mathbf{q}^{-1}=\mathbf{q}^{*}/||\mathbf{q}||^{2}
+\end{align}
+
+按照定义四元数和自己的逆的乘积为实四元数$\mathbf{1}$
+
+6、数乘
+
+ 和向量矩阵的数乘一样。
+
+ \textbf{用四元数表示旋转}
+
+有一个空间三维点$\mathbf{p}=[x,y,z]\in \mathbb{R}^{3}$，以及一个单位四元数$\mathbf{q}$指定的旋转，那么旋转后的
+点$\mathbf{p}^{'}=\mathbf{qp}\mathbf{q}^{-1}$，其中把三维空间点$\mathbf{p}$用一个虚四元数来表述$\mathbf{p}=
+[0,x,y,z]^{T}=[0,\mathbf{v}]^{T}$，最后把$\mathbf{p}^{'}$的虚部取出即得旋转之后得坐标。
+ 
+\textbf{四元数到其它旋转表示的转换}
+
+四元数到其他旋转的推导过程比较复杂，直接给出四元数到旋转向量的转换公式如下：
+\begin{equation} 
+    \left\{
+\begin{aligned}
+    &\theta=2\arccos q_0 \\ 
+    &[n_x,n_y,n_z]^{T}=[q_1,q_2,q_3]^{T}/ \sin{\frac{\theta}{2}}
+\end{aligned}
+    \right.
+\end{equation}
+
+\textbf{相似、仿射、射影变换}
+
+1、相似变换
+
+相似变换比欧式变换多了一个自由度，它允许物体进行均匀缩放，其变换矩阵为
+\begin{align}
+    \mathbf{T}_{s}=\left[\begin{array}{ll}
+        s\mathbf{R} & \mathbf{t} \\
+        \mathbf{0}^{T} & 1 \end{array}
+        \right]
+    \end{align}
+其中旋转部分多了一个缩放因子$s$，表示在对向量旋转过后，可以在$x,y,z$三个坐标上进行均匀缩放。
+
+2、仿射变换
+
+与欧式变换不同的是，仿射变换只要求$\mathbf{A}$是一个可逆矩阵，而不必是正交矩阵，仿射变换也叫正交投影。
+\begin{align}  
+    \mathbf{T}_A=\left[\begin{array}{ll}
+        \mathbf{A} & \mathbf{t} \\
+        \mathbf{0}^{T} & 1
+    \end{array}\right]
+\end{align}
+    
+3、射影变换
+
+射影变换是最一般最常见的变换，矩阵形式为
+\begin{align}  
+    \mathbf{T}_p=\left[\begin{array}{ll}
+        \mathbf{A} & \mathbf{t} \\
+        \mathbf{a}^{T} & v
+    \end{array}\right]
+\end{align}
+左上角为可逆矩阵$\mathbf{A}$，右上角为平移$\mathbf{t}$，左下角为缩放$\mathbf{a}^{T}$。由于采用了齐次坐标，
+所以可以对整个矩阵除以$v$得到右下角不是1就是0的矩阵，于是2D的射影变换有8个自由度，3D的射影变换有15个自由度。
+
+    
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
