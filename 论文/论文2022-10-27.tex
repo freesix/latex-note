@@ -18,12 +18,13 @@
 \thispagestyle{empty}
 \title{\textbf{GSN}}
 
-% \author{x}
+\author{x}
 \date{}
 \linespread{1.5}
 \renewcommand{\abstractname}{\Large\textbf{摘要}}
 
 \begin{document}
+
 \maketitle
 \setcounter{page}{0}
 \maketitle
@@ -33,6 +34,18 @@
 采用可学习的配对点析出网络相比于固定的特征匹配策略能够发现匹配点之间的一些隐藏信息，传统的相似度评价指标(如余弦相似度、特征点距离等)
 只能够挖掘特征向量之间的显式关系，一些相似度不高的真实匹配会因此被忽略。但在匹配种子点预选阶段仍然采用这些不可学习策略来过滤错误匹配，去
 除明显错误的匹配点，也减小了网络复杂度，并且很大部分匹配点之间的联系是很微弱的，加入学习过程是毫无意义的。 
+\subsection{准备工作（数据处理）,引出，Problem Formulation}
+
+假设有一对图像$\mathbf{A}$和$\mathbf{B}$分别拥有$n$和$m$个特征点(keypoints)。采用SIFT，SUR等特征提取算法求出对应的特征点坐标
+$\mathbf{p}_{\mathbf{I}}^{i}$和视觉描述子(visual descriptors)$\mathbf{d}_{\mathbf{I}}^{j}$，where $\mathbf{I}\in 
+\{\mathbf{A,B}\}$，$i\in\{1,...,n\}$，$j\in\{1,...,m\}$表示特征点索引。
+
+这里将两幅图像的拼接抽象(建模)为图对齐问题(graph match)，特征点表示节点$N$，节点之间的联系表示边，节点关系强弱表示边权重大小。于是
+有图$\mathbf{G}_{\mathbf{I}}=(\mathbf{V},\mathbf{E}),\mathbf{I}\in\{\mathbf{A},\mathbf{B}\}$，$\mathbf{V}$表示节点集合，
+$\mathbf{E}$表示边的集合。对于特征点$i$拥有邻域!!$N(j)$，特征点$j$拥有邻域!!$N(i)$。本文对于特征点邻域大小选择为预设邻域半径内距
+离特征点最近的十个邻接节点，邻域半径内邻居节点小于十个时用最近邻接节点复制补充。(这样选取是因为某些大片单一区域或者信息量少的图像区域
+没有包含足够的特征点)
+
 \subsection{注意力策略} 
 图像拼接过程中除了聚合关键点位置信息和视觉描述子外，邻域特征也可用来增强匹配点的背景特征。图注意力网络(Attention Graph Network)
 对于这类非规则结构数据有很好的处理能力，通过聚合局部或全局信息来捕捉节点之间的联系，学习视觉描述子之间的拓扑关系。介绍一种典型的带权重
@@ -48,8 +61,7 @@ $d$表示特征维度，带权重的注意力机制可以表示为，
 \mathbf{K}=\mathbf{Y},\mathbf{V}=\mathbf{Y}$。
 
 权重向量$\mathbf{\omega}$用于调整被聚合元素的重要程度。在本文采用一种可学习的评价网络层来学习注意力权重$\mathbf{\omega}$，并采
-用析出策略来拒绝明显错误的匹配点。引入上下文标准化(Context Normalization)\cite{Yi2017}
-对每个图像特征进行normalization和不同匹配
+用析出策略来拒绝明显错误的匹配点。引入上下文标准化(Context Normalization)\cite{Yi2017}对每个图像特征进行normalization和不同匹配
 对应关系的normalization，这使得特征分布能够编码场景几何结构和相机运动信息，嵌入上下文信息到训练层的每个匹配关系输入。(画出一个图
 来说明)
 \begin{align} 
@@ -57,20 +69,30 @@ $d$表示特征维度，带权重的注意力机制可以表示为，
 \end{align}
 其中||表示将两幅图片的匹配点节点按照特征维度进行连接，$\mathbf{CN}$表示上下文正则化，$\mathbf{Conv}$表示卷积操作。 
 
-在注意力权重分配策略中，常常是对于有效信息进行权重奖励，忽略或惩罚无效信息。这里采用析出策略舍弃异常离群值，将粗匹配种子点在学习过程中
-发现的异常匹配点进行舍弃。(!!!)
+在注意力权重分配策略中，通常对于信息的有效性进行加权奖励，而无效信息进行忽略或惩罚。这里采用析出策略舍弃异常离群值，将粗匹配种子点在学习
+过程中发现的异常匹配点进行舍弃。(!!!)
 \begin{align}
     \mathbf{X}^{'}=\mathbf{Att}(\mathbf{X}, \mathbf{Y}, \mathbf{\omega}_{s})
 \end{align}
 这里$\mathbf{X}^{'}\in \mathbb{R}^{s \times d}$，$s<\{m,n\}$(!!!)
 \subsection{邻域特征聚合}
-图像特征点
+图像特征点的特征空间构造过程中一般包含特征点坐标特征和视觉描述子向量，对于特征点之间的关系和拓扑结构很少有关注。领域信息为特征点增加了几何
+结构信息。对于特征点$i \in \mathbb{R}^{N}$，其邻域$?$为，
+\begin{align}
+    ... 
+\end{align}
+其中，
+
+\textbf{领域选取的依据原理及重要性}
+
 
     
 
 
+
+
 \newpage 
-% \bibliography{ref}
+\bibliography{ref}
 
 % \thispagestyle{empty}
 % \begin{abstract}

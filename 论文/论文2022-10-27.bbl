@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+
+\bibitem{Sattler2018}
+Torsten Sattler, Will Maddern, Carl Toft, Akihiko Torii, Lars Hammarstrand,
+  Erik Stenborg, Daniel Safari, Masatoshi Okutomi, Marc Pollefeys, Josef Sivic,
+  Fredrik Kahl, and Tomas Pajdla.
+\newblock Benchmarking 6dof outdoor visual localization in changing conditions.
+\newblock In {\em 2018 {IEEE}/{CVF} Conference on Computer Vision and Pattern
+  Recognition}. {IEEE}, jun 2018.
+
+\bibitem{Vaswani2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock {\em CoRR}, abs/1706.03762, 2017.
+
+\bibitem{Yi2017}
+Kwang~Moo Yi, Eduard Trulls, Yuki Ono, Vincent Lepetit, Mathieu Salzmann, and
+  Pascal Fua.
+\newblock Learning to find good correspondences.
+\newblock {\em CoRR}, abs/1711.05971, 2017.
+
+\end{thebibliography}
