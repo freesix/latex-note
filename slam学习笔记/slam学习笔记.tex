@@ -8,6 +8,7 @@
 \usepackage{abstract}
 \usepackage{ctex}
 \usepackage{mathtools}
+\usepackage{amsxtra}
 \usepackage[hidelinks]{hyperref}
 %断词相关
 \hyphenpenalty=5000
@@ -240,17 +241,279 @@ $textbf{z}_{k,j}$，同样可以用一个抽象的函数$h$来表示这样一个
 \end{align}
 左上角为可逆矩阵$\mathbf{A}$，右上角为平移$\mathbf{t}$，左下角为缩放$\mathbf{a}^{T}$。由于采用了齐次坐标，
 所以可以对整个矩阵除以$v$得到右下角不是1就是0的矩阵，于是2D的射影变换有8个自由度，3D的射影变换有15个自由度。
+\section{李群与李代数}
+\subsection{李群}
+\textbf{群}，只有一种(良好的)运算的集合叫做群。比如对于任何一个旋转或者变换矩阵加法是不封闭的，乘法是封闭的。
+群是一种集合加上一种运算的代数结构，把集合记作A，运算记作$\cdot$，群则可以记作$G=(A,\cdot)$，满足封闭性、
+结合律、幺元和逆的条件。
 
-    
+李代数的引出，由于旋转矩阵满足$\mathbf{R}\mathbf{R}^{T}=\mathbf{I}$，现在考虑旋转矩阵为时间相关函数
+$\mathbf{R}(t)\mathbf{R}(t)^{T}=\mathbf{I}$，在等式两边对时间求导得到
+\begin{align}  
+    \dot{\mathbf{R}}(t)\mathbf{R}(t)^{T}+\mathbf{R}(t)\dot{\mathbf{R}}(t)^{T}=0
+\end{align}
+整理可以知道
+\begin{align}  
+    \dot{\mathbf{R}}(t)\mathbf{R}(t)^{T}=-\mathbf{R}(t)\dot{\mathbf{R}}(t)^{T}
+\end{align}
+可以看出$\dot{\mathbf{R}}(t)\mathbf{R}(t)^{T}$是一个反对称矩阵，根据前面所学的对于一个反对称矩阵一定唯一
+ 有个向量与之对应，这里引出符号$\sphat$来表示这种关系，对于一个向量$\mathbf{a}$和一个矩阵$A$有这样的关系
+ 存在
+ \begin{align} 
+    \mathbf{a}{\sphat}=\mathbf{A}=\left[\begin{array}{ccc}0 & -a_3 & a_2 \\ a_3 & 0 & -a_1 \\
+        -a_2 & a_1 & 0 \end{array}\right]
+\end{align}
+相反的有$\mathbf{A}\spcheck = \mathbf{a}$
+
+于是对于反对称矩阵$\dot{\mathbf{R}}(t)\mathbf{R}(t)^{T}=\phi(t)\sphat,\phi(t)\in\mathbb{R}^{3}$
+等式两边右乘$\mathbf{R}(t)$，由于$\mathbf{R}$为正交矩阵，有
+\begin{align} 
+    \dot{\mathbf{R}}(t)=\phi(t)\sphat \mathbf{R}(t)=\left[\begin{array}{ccc}0 & -\phi_3 & \phi_2 \\
+        \phi_3 & 0 & -\phi_1 \\ -\phi_2 & \phi_1 & 0 \end{array}\right] \mathbf{R}(t) 
+\end{align}
+由此可知对于旋转矩阵求导只需左乘一个$\phi\sphat(t)$矩阵即可，考虑$t_0=0$时候，设定此时旋转矩阵为$\mathbf{I}$
+，按照导数定义可以把$\mathbf{R}(t)$在$t=0$附近进行一阶泰勒展开
+\begin{align}  
+    \mathbf{R}(t)\approx\mathbf{R}(t_0)+\dot{\mathbf{R}}(t_0)(t-t_0)=\mathbf{I}+\phi(t_0)\sphat(t)
+\end{align}
+
+可以看到$\phi$反映了$\mathbf{R}$的导数性质，故称它在$SO(3)$原点附近的正切空间，同时在$t_0$附近，设$\phi$保持
+为常数$\phi(t_0)=\phi_0$，则有
+\begin{align}  
+    \dot{\mathbf{R}}(t)=\phi(t_0)\sphat \mathbf{R}(t)=\phi_0\sphat \mathbf{R}(t)
+\end{align} 
+上面是一个关于$\mathbf{R}$的微分方程，而且具有初始值$\mathbf{R}(0)=\mathbf{I}$，求解可得
+\begin{align}  
+    \mathbf{R}(t)=\exp(\phi_0 \sphat t)
+\end{align}
+
+由此可知旋转矩阵$\mathbf{R}$和另一个反对称矩阵$phi_{0}\sphat t$通过指数关系发生了联系。
+\subsection{李代数}
+每个李群都有之对应的李代数，李代数描述了李群的局部性质，准确来说式单位元附近的正切空间。
+
+\textbf{李代数的定义}，李代数由一个集合$\mathbb{V}$，一个数域$\mathbb{F}$，和一个二元运算[,]组成，如果它们满足
+以下几条性质，则称$(\mathbb{V},\mathbb{F},[,])$为一个李代数，记作$\mathfrak{g}$
+\begin{itemize}
+\item[1] 封闭性，$\forall\mathbf{X},\mathbf{Y}\in \mathbb{V},[\mathbf{X},\mathbf{Y}]\in\mathbf{V}$
+\item[2] 双线性，$\forall\mathbf{X},\mathbf{Y},\mathbf{Z}\in\mathbb{V},a,b\in\mathbb{F}$，有\\
+$[a\mathbf{X}+b\mathbf{Y},\mathbf{Z}]=a[\mathbf{X},\mathbf{Z}]+b[\mathbf{Y},\mathbf{Z}],[\mathbf{Z},
+a\mathbf{X}+b\mathbf{Y}]=a[\mathbf{Z},\mathbf{X}]+b[\mathbf{Z},\mathbf{Y}]$
+\item[3] 自反性，$\forall\mathbf{X}\in\mathbb{V},[\mathbf{X},\mathbf{X}]=\mathbf{0}$
+\item[4] 雅可比等价，$\forall\mathbf{X},\mathbf{Y},\mathbf{Z}\in\mathbb{V},[\mathbf{X},[\mathbf{Y},
+\mathbf{Z}]]+[\mathbf{Z},[\mathbf{X},\mathbf{Y}]]+[\mathbf{Y},[\mathbf{Z},\mathbf{X}]]=\mathbf{0}$
+\end{itemize}
+其中二元运算被称为\textbf{李括号}
+
+之前提到的$\phi$事实上是一种李代数，$SO(3)$对应的李代数是定义在$\mathbb{R}^{3\times3}$上的向量，记作$\phi$，
+根据前面的推导，每个$\phi$都可以生成一个反对称矩阵：
+\begin{align} 
+    \mathbf{\Phi}=\phi\sphat=\left[\begin{array}{ccc}0 & -\phi_{3} & \phi_{2}\\ \phi_{3} & 0 & -\phi_{1}\\
+        -\phi_{2} & \phi_{1} & 0\\\end{array}\right] \in\mathbb{R}^{3\times3}
+\end{align}
+
+由此定义下，两个向量$\phi_{1},\phi_{2}$的李括号为
+\begin{align}  
+    [\phi_{1},\phi_{2}]=(\mathbf{\Phi}_{1},\mathbf{\Phi}_{2}-\mathbf{\Phi}_{2}\mathbf{\Phi}_{1})\spcheck
+\end{align}
+
+由此可知$\mathfrak{so}{3}=\{\phi=\mathbb{R}^{3},\mathbf{\Phi}=\phi\sphat \in\mathbb{R}^{3\times3}\}$
+
+对于SE(3)，它也有对应的李代数$\mathfrak{se}(3)$，与$\mathfrak{so}(3)$相似，$\mathfrak{se}(3)$位于$\mathbb{R}^{6}$
+空间中：
+\begin{align} 
+    \mathfrak{se}(3)=\left\{\mathbf{\xi}=\left[\begin{array}{c}\mathbf{\rho}\\\mathbf{\phi}
+    \end{array}\right] \in\mathbb{R}^{6},\mathbf{\rho}\in\mathbb{R}^{3},\mathbf{\phi}\in\mathfrak{so}(3),
+    \mathbf{\xi}\sphat=\left[\begin{array}{cc}\mathbf{\phi}\sphat & \mathbf{\rho}\\\mathbf{0}^{T} & 
+        0\end{array}\right]\in\mathbb{R}^{4\times4}\right\} 
+    \end{align}
+我们把每个$\mathfrak{se}(3)$元素记作$\mathbf{\xi}$，它是一个六维向量，前三维为平移(但含义和变换矩阵中的平移不同)，记作
+$\mathbf{\rho}$，后面三维为旋转记作$\mathbf{\phi}$，实质上是$\mathfrak{se}(3)$元素，同时拓展了$\sphat$符号的
+含义，在$\mathfrak{se}(3)$中同样使用$\sphat$符号，将一个六维向量转换成四维度矩阵，不再表述为反对称。
+\begin{align} 
+    \mathbf{\xi}^{sphat}=\left[\begin{array}{cc}\mathbf{\phi}\sphat & \mathbf{\rho}\\
+        \mathbf{0}^{T} & 0 \end{array}\right] \in\mathbb{R}^{4\times4}
+    \end{align}
+
+如何计算$\exp(\phi\sphat)$，这是一个矩阵的指数，在李群和李代数中称为指数映射。如何计算它，这里先将其泰勒展开
+\begin{align} 
+    \exp{\mathbf{A}}=\sum_{n=0}^{\inf}\frac{1}{n!}\mathbf{A}^{n}
+\end{align}
+但是这个方法没有办法直接计算，并且也不想计算矩阵的无穷次幂，于是推导了一种简便的计算方法，由于$\mathbf{\phi}$是三维向量
+，我们可以定义它的模长和方向，分别记作$\theta$和$\mathbf{\alpha}$，于是有$\mathbf{\phi}=\theta\mathbf{\alpha}$，
+这里$\mathbf{\alpha}$为一个长度为1的方向向量，即$||\mathbf{\alpha}||=1$，首先它有以下两条性质
+\begin{align} 
+    \mathbf{\alpha}\sphat\mathbf{\alpha}\sphat=\left[\begin{array}{ccc}-a_{2}^{2}-a_{3}^{2} & a_{1}a_{2} & 
+    a_{1}a_{3} \\ a_{1}a_{2} & -a_{1}^{2}-a_{3}^{2} & a_{2}a_{3} \\ a_{1}a_{3} & a_{2}a_{3} & -a_{1}^{2}
+    -a_{2}^{2} \end{array}\right] = \mathbf{a}\mathbf{a}^{T}-\mathbf{I}
+    \end{align}
+以及  
+\begin{align}  
+    \mathbf{a}\sphat\mathbf{a}\sphat\mathbf{a}\sphat=\mathbf{a}\sphat(\mathbf{a}\mathbf{a}^{T}-\mathbf{I})
+    =-\mathbf{a}\sphat
+\end{align}
+这两个式子的提供使得可以处理$\mathbf{\alpha}\sphat$高阶项的方法。
+\begin{align} 
+    \exp(\phi\sphat)=\exp(\theta\mathbf{\alpha}\sphat)=\sum_{n=0}^{\inf}\frac{1}{n!}(\theta\mathbf{\alpha}
+    \sphat)^{n}=\cos{\theta\mathbf{I}}+(1-\cos\theta)\mathbf{\alpha}\mathbf{\alpha}^{T}+\sin\theta 
+    \mathbf{\alpha}\sphat
+\end{align}
+上式和罗德里格斯公式一模一样，这表明$\mathfrak{so}(3)$实际上就是所谓的旋转向量组成的空间，而指数映射及罗德里格斯公式，
+通过它们可以把$\mathfrak{so}(3)$中任意一个向量对应到一个位于$SO(3)$中的旋转矩阵，反之，如果定义对数映射，也能把$SO(3)$中
+的元素对应到$\mathfrak{so}(3)$中 
+\begin{align} 
+    \mathbf{\phi}=\ln{(\mathbf{R})}\spcheck=\left(\sum_{n=0}^{\inf}\frac{(-1)^{n}}{n+1}(\mathbf{R}-
+    \mathbf{I})^{n+1}\right)\spcheck 
+\end{align}
+在实际运算中没必要直接用泰勒展开计算对数映射，可以利用迹的性质分别求解转角和转轴，采用这种方法更加省事。后面的$SE(3)$上的
+对数映射和$\mathfrak{se}(3)$上的指数映射也如此推导不在赘述，直接给出下图
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/对应关系.png}
+    \caption{$SO(3),SE(3),\mathfrak{so}(3),\mathfrak{se}(3)$的对应关系} 
+\end{figure}
+\subsection{李代数求导与扰动模型}
+使用李代数是为了进行优化，在优化过程中不可避免的有求导，那么李代数的求导如何进行，
+
+
+
+
+
 
 
  
+\newpage
+\section{概率运动模型}
+\subsection{速度运动模型}
+理想模型，不考虑速度的误差机器人以速度$u_k$在很短时间$\Delta t$内做匀速运动，位姿从$x_{k-1}$转移到$x_k$。
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/速度运动模型.png}
+    \caption{速度运动模型}
+\end{figure}
+\begin{align}  
+    \mathbf{x}_{k}=\left[\begin{array}{c}x^{'} \\ y^{'} \\ \theta^{'} \end{array}\right]=
+    g(\mathbf{x}_{k-1},\mathbf{u}_{K}) = \left[\begin{array}{c} x \\ y \\ \theta\end{array}\right]
+    +\left[\begin{array}{ccc} \cos{\theta} & -\sin{\theta} & 0 \\ \sin{\theta} & \cos{\theta}
+    & 0 \\ 0 & 0 & 1 \\ \end{array}\right] \left[\begin{array}{c}v_x \\ v_y \\ \omega_{z} 
+    \end{array}\right] \Delta t
+\end{align}
 
+考虑速度的误差，在实际中，需要考虑$u_{k}、x_{k-1}、x_{k}$的误差，这里简单假设为服从高斯分布
+\begin{align} 
+    &\mathbf{u} \backsim N(\overline{\mathbf{u}}_{k},\Sigma_{\mathbf{u}_{k}}) \notag\\
+    &\mathbf{x}_{k-1} \backsim N(\overline{\mathbf{x}}_{k-1},\Sigma_{\mathbf{x}}) \\
+    &\mathbf{x}_{k} \backsim N(\overline{\mathbf{x}}_{k},\Sigma_{\mathbf{x}_{k}}) \notag
+\end{align}
+这样，$u_{k}、x_{k-1}、x_{k}$都变成了多元随机变量，随机变量的均值就是其估计值，用协方差矩阵描述其不确定性大小。
+$u_{k}$的误差主要是由3个速度分量$v_{k}、v_{y}、\omega_{z}$的误差决定的，所以$u_{k}$的协方差矩阵如下所示
+\begin{align} 
+    \Sigma_{\mathbf{u}_{k}}=\left[\begin{array}{ccc}\sigma_{v_{x}}^{2} & 0 & 0 \\
+        0 & \sigma_{v_{y}}^{2} & 0 \\ 0 & 0 & \sigma_{\omega_{z}}^{2}\end{array}\right]  
+    \end{align}
+已知$u_{k}$和$x_{k-1}$的分布特性，利用运动的状态转移公式就可以推导出$x_{k}$的分布特性，即状态转移概率
+$\mathbf{P}(\mathbf{x}_k|\mathbf{x}_{k-1},\mathbf{u}_k)$。其中一个最简单的方法是先将状态转移函数g
+进行一阶泰勒级数展开来实现线性化，然后直接通过线性计算就能够得到$x_{k}$的协方差矩阵
+\begin{align}
+    \Sigma_{x_{k}}=\left[\begin{array}{cc}\frac{\partial g}{\partial \mathbf{x}_{k-1}} & 
+        \frac{\partial g}{\partial \mathbf{u}_k}\end{array}\right]
+        \left[\begin{array}{cc}\Sigma_{x_{k-1}} & \mathbf{0}_{3 \times 3}\\
+            \mathbf{0}_{3\times 3} & \Sigma_{\mathbf{u}_k}\end{array}\right]
+        \left[\begin{array}{cc}\frac{\partial g}{\partial \mathbf{x}_{k-1}} & 
+        \frac{\partial g}{\partial \mathbf{u}_k}\end{array}\right]^{T}
+\end{align} 
+其中，$\left[\begin{array}{cc}\frac{\partial g}{\partial \mathbf{x}_{k-1}} & \frac{\partial g}{\partial \mathbf{u}_k}\end{array}\right]$
+为函数$g$的雅可比矩阵。
+上面的推导都是基于两大假设，一是运动时间$\Delta t$很小，二是$u_k、x_{k-1}、x_{k}$的误差都服从高斯分布。
+\subsection{里程计运动模型}
+上面的速度运动模型中有太强的假设，准确性很难保证，实际中机器人一般配备有里程计等感知传感器来用于反馈运动。
+通过前后两个里程计的差值，可以求出里程计的增量值$u_{K}$，即所谓的机器人状态转移量。
+\begin{align}  
+    \mathbf{u}_{k}=\textbf{odom}_k - \textbf{odom}_{k-1}=
+    \left[\begin{array}{c}\Delta x \\ \Delta y \\ \Delta \theta\end{array}\right] 
+\end{align}
+与讨论速度运动模型一样，先不讨论有误差的模型，直接推导状态转移概率$\mathbf{P}(\mathbf{x}_k|
+\mathbf{x}_{k-1},\mathbf{u}_k)$的数学形式。
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/里程计运动模型.png}
+    \caption{里程计运动模型} 
+\end{figure}    
+此时可直接求出$x_k$
+\begin{align}  
+    \mathbf{x}_{k}=\left[\begin{array}{c}x^{'} \\ y^{'} \\ \theta^{'}\end{array}\right]
+    =g(\mathbf{x}_{k-1},\mathbf{u}_{k})=\left[\begin{array}{c}x \\ y \\ \theta \end{array}\right] 
+    +\left[\begin{array}{c}\Delta x \\ \Delta y \\ \Delta \theta \end{array}\right]
+\end{align}
 
+考虑历程计误差的情况下，这里将$u_k$通用的表示在三维空间运动，但是机器人底盘被限制在二维平面运动，所以其中z轴的偏移量、
+x轴的旋转量和y轴的旋转量均为0。
+\begin{align} 
+    \Sigma_{u_k}=\left[\begin{array}{cccccc}
+        \sigma_{\Delta x}^{2} & 0 & 0 & 0 & 0 & 0 \\
+        0 & \sigma_{\Delta y}^{2} & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & \sigma_{\Delta\theta}^{2} \\
+    \end{array}\right]
+\end{align}
 
+轮式里程计是存在累计误差的，即机器人地盘运动得越远累积误差越大。可以用运动距离$\sqrt{(\Delta x)^{2}+(\Delta y)^{2}}$
+和旋转量$|\Delta \theta|$来量化$u_k$的误差。
+\begin{align} 
+    &\sigma_{\Delta x}^{2}=\xi_{\Delta xy}+\alpha_{1}\sqrt{(\Delta x)^{2}+(\Delta y)^{2}} + \alpha_{2}|\Delta \theta| \notag \\
+    &\sigma_{\Delta y}^{2}=\xi_{\Delta xy}+\alpha_{1}\sqrt{(\Delta x)^{2}+(\Delta y)^{2}} + \alpha_{2}|\Delta \theta| \\
+    &\sigma_{\Delta \theta}^{2}=\xi_{\Delta \theta}+\alpha_{3}\sqrt{(\Delta x)^{2}+(\Delta y)^{2}} + \alpha_{4}|\Delta \theta| \notag
+\end{align}    
+\section{概率观测模型} 
+这先介绍激光模型
+\subsection{波束模型}
+每个激光束可以得到一个距离值$z_{k}^{i}$，对于$n$个测量值$\mathbf{z}_{k}=\{z_{k}^{1},z_{k}^{2},...,z_{k}^{n}\}$，
+那么观测$z_k$的不确定性由每个单独光束测量值的不确定性相乘得到
+\begin{align} 
+    P(\mathbf{z}_k | \mathbf{x}_k,\mathbf{m})=\prod_{i=1}^{n}P(z_{k}^{i} | \mathbf{x}_k,\mathbf{m})
+\end{align} 
+根据实验和经验所得，单个激光束测距值误差主要分为四类：读书误差、动态干扰、测量失效和随机误差。
 
+读数误差，传感器由于构造、计算精度、分辨率等因素给测量带来的误差，可直接用高斯分布来表示，其中$\eta_{hit}$是归一化
+因子，$z_{max}$是激光束的最大测量值。
+\begin{align}  
+    P(z_{k}^{i} | \mathbf{x}_k,\mathbf{m}) =\left\{\begin{array}{l}\eta_{hit}N(\overline{z}_{k}^{i},
+    \sigma_{hit}^{2}),0\leq z_{k}^{i} \leq z_{max} \\ 0, \text{其它} \end{array}\right.
+\end{align}
 
+动态干扰误差，环境中动态障碍物挡住激光束，导致原本对应在地图中的障碍物的测量距离变短，采用指数分布来表示，其中$\eta_{short}$
+是归一化因子，$\lambda_{short}$是指数分布参数
+\begin{align} 
+    P_{short}(z_{k}^{i} | \mathbf{x}_k, \mathbf{m}) = \left\{\begin{array}{l}\eta_{short}\lambda_{short}
+    \exp^{-\lambda_{short}z_{k}^{i}},0\leq z_{k}^{i}\leq \overline{z}_{k}^{i} \\ 0,\text{其它}\end{array}
+    \right. 
+\end{align}
 
+环境中的黑色吸光、透明、镜面反反射等障碍物会导致测量失效，使得激光测距值超量程或者无穷远，这用最大量程$z_{max}$附近的
+窄矩形分布来描述
+\begin{align}  
+    P_{max}(z_{k}^{i} | \mathbf{x}_k,\mathbf{m})=\left\{\begin{array}{l}\frac{1}{\varepsilon},z_{max}
+    -\varepsilon \leq z_{k}^{i} \leq z_{max} \\ 0,\text{其它} \end{array}\right.
+\end{align}
+
+最后哪些不能明确建模的误差，用一个均匀分布的随机误差来统一描述，均匀分布的范围是整个量程区间
+\begin{align} 
+    P_{rand}(z_{k}^{i} | \mathbf{x}_{k},\mathbf{m})=\left\{\begin{array}{l}\frac{1}{z_{max}},0\leq 
+    z_{k}^{i} \leq z_{max} \\ 0,\text{其它}\end{array}\right.
+\end{align}
+
+将上述四种误差加权平均后就是光束模型，其中$z_{hit},z_{short},z_{max},z_{rand}$为加权系数，它们的和为1，加权后的
+概率分布为
+\begin{align} 
+    P(z_{k}^{i} | \mathbf{x}_{k},\mathbf{m}) = z_{hit}\cdot P_{hit}+z_{short}\cdot P_{short}+
+    z_{max}\cdot P_{max}+z_{rand}\cdot P_{rand}
+\end{align}
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/波束模型的概率描述.png}
+    \caption{波束模型的概率描述}
+\end{figure}
+\subsection{似然域模型}
+它的思路是利用测量值对应的机器人位姿，将测量值$z_{k}^{i}$透射到已有的地图上，将超过量程的测量值直接丢弃，然后用似然域
+描述测量值分布。所谓似然域就是激光束上障碍物出现的概率大小由其附近的地图点远近决定。
+\subsection{概率图模型}
 
 
 
