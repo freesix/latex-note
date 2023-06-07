@@ -371,7 +371,185 @@ $\mathbf{\rho}$，后面三维为旋转记作$\mathbf{\phi}$，实质上是$\mat
     \caption{$SO(3),SE(3),\mathfrak{so}(3),\mathfrak{se}(3)$的对应关系} 
 \end{figure}
 \subsection{李代数求导与扰动模型}
-使用李代数是为了进行优化，在优化过程中不可避免的有求导，那么李代数的求导如何进行，
+使用李代数是为了进行优化，在优化过程中不可避免的有求导，那么李代数的求导如何进行?
+
+李代数的指数映射与李群相对应，那么李代数的指数映射是否符合指数运算的基本规则，显然这是不成立的，因为$\exp{\phi\sphat}$中是
+一个矩阵，不满足$\exp{(\phi_1\sphat)}\exp{(\phi_2\sphat)}=\exp{(\phi_1\sphat + \phi_2\sphat)}$，它满足的是一个
+BCH公式(Baker-Campbell-Hausdorff)，给出其完整公式的前面几项
+\begin{align} 
+    ln(\exp{(\mathbf{A})}\exp{(\mathbf{B})})=\mathbf{A}+\mathbf{B}+\frac{1}{2}[\mathbf{A},\mathbf{B}]+
+    \frac{1}{12}[\mathbf{A},[\mathbf{A},\mathbf{B}]]-\frac{1}{12}[\mathbf{B},[\mathbf{A},\mathbf{B}]]+\cdot\cdot\cdot 
+\end{align}
+其中[]为李括号，当考虑$SO(3)$上的李代数$ln(\exp{(\phi_{1}\sphat)}\exp{(\phi_{2}\sphat)})\spcheck$，当$\phi_{1}$
+或$\phi_{2}$为小两时，小量二次以上的项都可以被忽略，此时BCH拥有线性近似表达
+\begin{align}
+     ln(\exp{(\phi_{1}\sphat)}\exp{(\phi_{2}\sphat)})\spcheck\approx\left\{\begin{array}{l}\mathbf{J}_{l}
+        (\phi_2)^{-1}\phi_{1}+\phi_{2}\quad\text{当$\phi_{1}$为小量} \\ \mathbf{J}_{r}(\phi_{1})^{-1}
+        \phi_{2}+\phi_{1}\quad\text{当$\phi_{2}$为小量}\end{array}\right.
+\end{align}
+以上式的第一个近似为例，当对一个旋转矩阵$\mathbf{R}_{2}$(李代数为$\phi_{2}$)左乘一个微小旋转矩阵$\mathbf{R}_{1}$
+(李代数为$\phi_{1}$)时，可以近似的看作，在原有李代数$\phi_{2}$上加了一项$\mathbf{J}_{l}(\phi_{2})\phi_{1}$，同理
+第二个近似描述了右乘一个微小位移的情况。于是在BCH近似下，分成了左乘近似和右乘近似两种，以左乘为例
+\begin{align} 
+    \mathbf{J}_{l}=\mathbf{J}=\frac{\sin\theta}{\theta}\mathbf{I}+(1-\frac{\sin\theta}{\theta})\mathbf{a}
+    \mathbf{a}^{T}+\frac{1-\cos\theta}{\theta}\mathbf{a}\sphat
+\end{align}
+它的逆为
+\begin{align} 
+    \mathbf{J}_{l}^{-1}=\frac{\theta}{2}\cot\frac{\theta}{2}\mathbf{I}+(1-\frac{\theta}{2}\cot\frac{\theta}{2})
+    \mathbf{a}\mathbf{a}^{T}-\frac{\theta}{2}\mathbf{a}\sphat 
+\end{align}
+而右乘雅可比仅需对自变量取符号即可：
+\begin{align} 
+    \mathbf{J}_{r}(\phi)=\mathbf{J}_{l}(-\phi)
+\end{align}
+
+由此对某一旋转$\mathbf{R}$对应的李代数$\phi$给它左乘一个微小旋转$\Delta\mathbf{R}$(对应的李代数为$\Delta\phi$)
+在李群上得到$\Delta\mathbf{R}\cdot\mathbf{R}$，而在李代数上，根据BCH相似，为$\mathbf{J}_{l}^{-1}(\phi)\Delta\phi
++\phi$，合并起来来可写为
+\begin{align} 
+    \exp{(\Delta\phi\sphat)}\exp{(\phi\sphat)}=\exp((\phi+\mathbf{J}_{l}^{-1}(\phi)\Delta\phi)\sphat)
+\end{align} 
+反之，在李代数上进行加法，让一个$\phi$加上$\Delta\phi$，那么可以近似为李群上带所有雅可比的乘法：
+\begin{align} 
+    \exp((\phi+\Delta\phi)\sphat)=\exp((\mathbf{J}_{l}\Delta\phi)\sphat)\exp(\phi\sphat)
+    =\exp(\phi\sphat)\exp((\mathbf{J}_{r}\Delta\phi)\sphat)
+\end{align}
+同样对于$SE(3)$也有类似的BCH近似
+\section{畸变和相机模型}
+由透镜形状引起的畸变叫做径向畸变，会将现实中的一条直线变为一条曲线，它主要分为两大类\textbf{桶形畸变}和\textbf{枕形畸变}，
+桶形畸变图像放大率随着光轴之间的距离增加而减小，而枕行畸变恰好相反。在这两种畸变中穿过图像中心和光轴有交点的直线还能保持形状不变。
+在相机的组装过程中不能使透镜和成像平面严格平行会引入\textbf{切向畸变}
+
+归一化平面上任意一点$\mathbf{p}$坐标为$[x,y]^{T}$，也可用极坐标形式$[r,\theta]^{T}$，其中$r$表示点$\mathbf{p}$与坐标
+系原点之间的距离，$\theta$表示与水平轴的夹角。径向畸变可以堪称坐标点沿着长度方向发生了变化，切向畸变可以看成坐标点沿着切线
+方向发生了变化，对于径向畸变
+\begin{align} 
+    x_{distorted}=x(1+k_{1}r^{2}+k_{2}r^{4}+k_{3}r^{6}) \notag\\
+    y_{distorted}=y(1+k_{1}r^{2}+k_{2}r^{4}+k_{3}r^{6})
+\end{align} 
+对于切向畸变可以用另外两个参数来表示
+\begin{align} 
+    x_{distorted}=x+2p_{1}xy+p_{2}(r^{2}+2x^{2}) \notag \\
+    y_{distorted}=y+p_{1}(r^{2}+2y^{2})+2p_{2}xy
+\end{align} 
+联合上面的公式就可以通过五个畸变系数找到这个点在像素平面中正确的位置：
+\begin{align} 
+    \left\{\begin{array}{l}
+        x_{distorted}=x(1+k_{1}r^{2}+k_{2}r^{4}+k_{3}r^{6})+x+2p_{1}xy+p_{2}(r^{2}+2x^{2}) \\
+        y_{distorted}=y(1+k_{1}r^{2}+k_{2}r^{4}+k_{3}r^{6})+y+p_{1}(r^{2}+2y^{2})+2p_{2}xy
+    \end{array}\right.
+\end{align}
+将畸变后的点通过内参数矩阵投影到像素平面，得到该点在图像上的正确位置：
+\begin{align} 
+    \left\{\begin{array}{l}
+        u=f_{x}x_{distorted}+c_{x} \\
+        v=f_{y}y_{distorted}+c_{y}
+    \end{array}\right.
+\end{align}
+\section{极几何}
+\textbf{三角化}，已知两幅图片中对应真实世界中点$P$的两个像素坐标$p$和$p^{'}$，两个相机的内参$K$和$K^{'}$
+以及两个相机之间的位姿变换矩阵$\mathbf{R}$和$\mathbf{T}$，求解$P$的三维坐标。即寻找$P$满足
+\begin{align} 
+    \left\{\begin{array}{l}p=MP=K[I\quad 0]P \\ p^{'}=M^{'}P=K^{'}[R\quad T]P\end{array}\right.
+\end{align} 
+但现实是对于相机内参$K$和$K^{'}$、相机位姿旋转矩阵$R$、平移向量$T$往往不知道，仅清楚两张图片之间的对应点
+$p$和$p^{'}$。
+
+于是在多视图几何中存在以下几个关键问题
+\begin{enumerate}
+    \item 摄像几何：从一张或者多张图像中求解摄像机的内外参数
+    \item 场景几何：通过两张至多张图片寻找3D场景坐标
+    \item 对应关系：已知一个图像中的$p$点，如何在另一个图像中找到对应的$p^{'}$点
+\end{enumerate}
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/极几何.png}
+    \caption{极几何} 
+\end{figure}
+如图：
+\begin{enumerate}
+    \item 极平面：过点$P$，$O_{1}$与$O_{2}$的平面
+    \item 基线：$O_{1}$与$O_{2}$的连线
+    \item 极线：极平面与成像平面的交线
+    \item 极点：基线与成像平面的交点
+\end{enumerate}
+极几何的特例：平行视图(常见双目立体、VR)：
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/平行视图.png}
+    \caption{极几何的特例：平行视图} 
+\end{figure}
+\begin{enumerate}
+    \item 两个图像平面平行
+    \item 基线平行于图像平面，极点$e$和$e^{'}$位于无穷远处
+    \item 极线平行于图像坐标系的$u$轴
+\end{enumerate}
+\subsection{本质矩阵}
+对于规范化相机，图像$I$上点$p$像素坐标为$(u,v)$，图像$I^{'}$上的点$p^{'}$坐标为$(u^{'},v^{'})$，
+$K=K^{'}=\left[\begin{array}{ccc}1&0&0\\0&1&0\\0&0&1\end{array}\right]$，因为为规范化相机
+所以点$p$在$O_{1}$坐标系下的\textbf{非齐次坐标}为$(u,v,1)$，同理空间点$p^{'}$在$O_{2}$下的
+\textbf{非齐次坐标}为$(u^{'},v^{'},1)$
+知道$O_{1}$到$O_{2}$的旋转矩阵$R$和平移向量$T$，于是有
+\begin{align} 
+    &p^{'}\text{在}O_{1}\text{的坐标}=R^{T}p^{'}-R^{T}T \notag\\
+    &O_{2}\text{在}O_{1}\text{的坐标}=-R^{T}T 
+\end{align}
+于是可以求得一个垂直于极平面的向量
+\begin{align} 
+    R^{T}T\times(R^{T}p^{'}-R^{T}T)=R^{T}T\times R^{T}p^{'}
+\end{align}
+因为$p$点在极平面上，所以有
+\begin{align} 
+    [R^{T}T\times R^{T}p^{'}]^{T}\cdot p=0
+\end{align}
+将上面的式子推导可以得出
+\begin{align} 
+    p^{'T}[T\times R]p=0 
+\end{align}
+于是点$p$和点$p^{'}$存在一个极几何约束-----本质矩阵
+\begin{align} 
+    &E=T\times R\Rightarrow E=\text{本质矩阵} \\
+    &p^{'}Ep=0
+\end{align}
+其中本质矩阵有以下性质：
+\begin{enumerate}
+    \item $p$对应的极线是$l^{'}(l^{'}=Ep)$
+    \item $p^{'}$对应的极线是$l(l=E^{T}p^{'})$
+    \item $Ee=0$与$e^{'T}E=0$
+    \item $E$是奇异的(秩2)
+    \item $E$是5个自由度(三个旋转+三个平移，$det(E)$去掉一个自由度)
+\end{enumerate}                
+\subsection{基础矩阵}
+这个为正常透视相机下的点$p$与点$p^{'}$的对应关系，此时推导类比规范化相机下的推导，先将两张图像上点的
+坐标转换为规范化相机下的坐标，有：
+\begin{align}
+    \left\{\begin{array}{l}p_{c}=K^{-1}p\\p_{c}^{'}=K^{'-1}p^{'}\end{array}\right. 
+\end{align}
+于是有：$p_{c}^{'T}Ep_{c}=(K^{'-1}p^{'})^{T}\cdot[T_{\times}]RK^{-1}p=p^{'T}K^{'-T}
+[T_{\times}]RK^{-1}p=0$
+即可求得基础矩阵
+\begin{align} 
+    F=K^{'-T}[T_{\times}]RK^{-1}\rightarrow p^{'T}Fp=0
+\end{align}
+同样它也有上述的几个性质，不同的是它有7个自由度，因为尺度无法确定。
+
+\noindent\textbf{常见的基础矩阵估计方法八点法，归一化八点法}
+\subsection{单应性矩阵}
+空间平面在两个摄像机下的投影几何
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/单应性矩阵推导.png}
+    \caption{单应性矩阵推导} 
+\end{figure}
+如图单应性矩阵推导已知第一个摄像机的内参矩阵$K$，第二个内参矩阵$K^{'}$，第二个摄像机相对于第一个摄像机
+的位置$(R,t)$，$n$为平面$\pi$在第一个摄像机坐标系下的单位法向量，$d$为坐标原点到平面$\pi$的距离
+
+平面$\pi$的方程为$n^{T}\tilde{P}=d$，$\tilde{P}$表示点$P$的欧式坐标，由此直接给出平面$\pi$的
+单应性矩阵$H=K^{'}(R+tn_{d}^{T})K^{-1}$，其中，$n_{d}=\frac{n}{d}$
+
+\textbf{约束关系}
+
+基础矩阵建立点和极线的对应关系
+
+单应矩阵建立点和点的对应
 
 
 
@@ -379,7 +557,6 @@ $\mathbf{\rho}$，后面三维为旋转记作$\mathbf{\phi}$，实质上是$\mat
 
 
 
- 
 \newpage
 \section{概率运动模型}
 \subsection{速度运动模型}

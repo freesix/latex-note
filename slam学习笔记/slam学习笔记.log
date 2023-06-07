@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.11)  5 JUN 2023 21:06
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.11)  7 JUN 2023 21:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -611,11 +611,19 @@ Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapp
 Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
 Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
 Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
-Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
 [5]
+Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
 File: images/对应关系.png Graphic file (type bmp)
 <images/对应关系.png>
- [6]
+[6] [7]
+File: images/极几何.png Graphic file (type bmp)
+<images/极几何.png>
+File: images/平行视图.png Graphic file (type bmp)
+<images/平行视图.png>
+ [8] [9]
+File: images/单应性矩阵推导.png Graphic file (type bmp)
+<images/单应性矩阵推导.png>
+ [10]
 File: images/速度运动模型.png Graphic file (type bmp)
 <images/速度运动模型.png>
 
@@ -625,31 +633,25 @@ Missing character: There is no 、 (U+3001) in font [lmroman10-regular]:mapping=
 Missing character: There is no 、 (U+3001) in font [lmroman10-regular]:mapping=tex-text;!
 Missing character: There is no 、 (U+3001) in font [lmroman10-regular]:mapping=tex-text;!
 Missing character: There is no 、 (U+3001) in font [lmroman10-regular]:mapping=tex-text;!
+[11]
 Missing character: There is no 、 (U+3001) in font [lmroman10-regular]:mapping=tex-text;!
 Missing character: There is no 、 (U+3001) in font [lmroman10-regular]:mapping=tex-text;!
-[7]
 File: images/里程计运动模型.png Graphic file (type bmp)
 <images/里程计运动模型.png>
- [8] [9]
+[12] [13]
 File: images/波束模型的概率描述.png Graphic file (type bmp)
 <images/波束模型的概率描述.png>
- [10] [11] (./slam学习笔记.aux)
-
-Package rerunfilecheck Warning: File `slam学习笔记.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `slam学习笔记.out':
-(rerunfilecheck)             Before: 0FC34787F2EA01075A8FA42C5D58A6D6;1117
-(rerunfilecheck)             After:  338585F0E8ED0C936C4B23E7D46E286B;1255.
+ [14] [15] (./slam学习笔记.aux)
+Package rerunfilecheck Info: File `slam学习笔记.out' has not changed.
+(rerunfilecheck)             Checksum: A8C7EAA47AB86B873C0DB0084CE7D382;1701.
  ) 
 Here is how much of TeX's memory you used:
- 15845 strings out of 476179
- 337422 string characters out of 5809544
- 696783 words of memory out of 5000000
- 36340 multiletter control sequences out of 15000+600000
+ 15870 strings out of 476179
+ 337893 string characters out of 5809544
+ 699454 words of memory out of 5000000
+ 36362 multiletter control sequences out of 15000+600000
  476890 words of font info for 72 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 89i,26n,97p,365b,352s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,26n,97p,365b,354s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on slam学习笔记.pdf (11 pages).
+Output written on slam学习笔记.pdf (15 pages).
