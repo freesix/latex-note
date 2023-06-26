@@ -683,6 +683,7 @@ x轴的旋转量和y轴的旋转量均为0。
     P(z_{k}^{i} | \mathbf{x}_{k},\mathbf{m}) = z_{hit}\cdot P_{hit}+z_{short}\cdot P_{short}+
     z_{max}\cdot P_{max}+z_{rand}\cdot P_{rand}
 \end{align}
+
 \begin{figure}[!htb]
     \includegraphics[width=\hsize]{images/波束模型的概率描述.png}
     \caption{波束模型的概率描述}
@@ -691,15 +692,259 @@ x轴的旋转量和y轴的旋转量均为0。
 它的思路是利用测量值对应的机器人位姿，将测量值$z_{k}^{i}$透射到已有的地图上，将超过量程的测量值直接丢弃，然后用似然域
 描述测量值分布。所谓似然域就是激光束上障碍物出现的概率大小由其附近的地图点远近决定。
 \subsection{概率图模型}
+对于实际问题中，比如slam系统中对一个随机变量的估计往往涉及多个变量之间的关系，比如对于随机变量(A,B,C,D)，有
+\begin{align} 
+    P(A)&=\sum_{D}\sum_{C}\sum{B}P(A,B,C,D) \\
+    P(A,B,C,D)&=P(A,B,C)P(D|A,B,C)  \notag\\
+              &=P(A,B)P(C|A,B)P(D|A,B,C) \\
+              &=P(A)P(B|A)P(C|A,B)P(D|A,B,C) \notag
+\end{align}
+上面的式子一个叫做变量A的边缘分布概率，一个叫做随机变量集合\{A,B,C,D\}的联合分布。这种求解和表示往往比较复杂，
+借助图论的方式结构化数据可以让随机变量之间的依赖关系变得更为直观。
 
+贝叶斯网络：有向图，各个节点都对应一个随机变量事件，网络结构描述各个事件之间的因果关系，就构成了静态贝叶斯网络。
+当随机变量由它的时序状态构成，每个状态产生对应的观测，两个状态节点之间的方向表示状态更新方向，状态节点和观测
+节点直接的箭头表示观测过程，这样的网络为动态贝叶斯网络。
 
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/贝叶斯网路.png}
+    \caption{贝叶斯网络}
+\end{figure}
 
+马尔可夫网络：每个节点表示一个随机变量，连接两个节点之间是没有方向的，边代表两个随机变量之间的相关性。
+马尔可夫网络参数化过程，其随机变量之间的联合概率可分解为团$Q_i$的势能函数$\varPsi_{Q_{i}}(Q_i)$的乘积
+，团是一个节点的集合，团中的节点都必须两两之间有边连接。以团中随机变量作为自变量构成团的势能函数，团的势能函数
+是一个抽象函数，在实际应用中被具体化为特定形式。\textbf{往团中加入其它任何节点，将不再成团，这样的团就是
+最大团}
 
+将图结构中各个随机变量记为随机变量$\{X_1,X_2,\cdots,X_n\}$，图结构划分出来所有的最大团记为$Q=\{Q_1,Q_2,
+\cdots,Q_m\}$，那么它们的联合概率分布就可以记作
+\begin{align} 
+    P(X_1,X_2,\cdots,X_n)=\frac{1}{Z}\prod_{i=1}^{m}\Psi_{Q_i}(Q_i)
+\end{align} 
+\subsection{概率图模型在slam中的应用}
+首先用动态贝叶斯网络表示slam问题
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/用贝叶斯网络表示slam.png}
+    \caption{用贝叶斯网络表示slam}
+\end{figure}
 
+在线slam系统只对环境路标特征和机器人当前位姿状态进行估计$P(x_k,m|Z_{0:k},U_{0:k},x_0)$，完全slam系统
+式对环境路标特征和机器人当前及过去所有位姿状态$x=\{x_1,x_2,\cdots,x_k\}$进行估计$P(X_{0:k},m|Z_{0:k},
+U_{0:k},x_0)$
 
+那么如何将一个slam问题表示为因子图的方式呢，以一个简单的slam系统为例
+\begin{figure}[!htb]
+    \centering
+   \includegraphics[scale=0.5]{images/小规模slam.png}
+   \caption{小规模slam示例}
+\end{figure} 
 
+根据前面的参数化方法，可以表示此个联合概率分布为
+\begin{align} 
+    P(X,m,Z,U)=&P(m_1)P(m_2)PP(u_0)P(u_1)(u_2)\quad\text{(先验，可忽略)} \times \notag\\
+        &P(x_0)P(x_1|x_0,u_1)P(x_2|x_1,u_2)P(x_3|x_2,u_3)\quad\text{运动} \times \\
+        &P(z_1|x_1,m_1)P(z_2|x_2,m_1)P(z_3|x_3,m_2) \quad\text{观测} \notag 
+\end{align}
+看到联合概率分布由先验、运动和观测组成，其中先验一般为常量可以忽略，那么概率图模型就包含了SLAM问题所有的运动和
+观测信息。随机变量集$V=\{Z,U\}$表示直接测量信息，$S=\{X,m\}$表示不可直接观测信息，也就是待估计量，然后将不
+关心的量隐藏到因子函数约束中，直接以上式的乘积项作为因子图的因子项，那么就可以得到如下的因子图表示：
+\begin{align} 
+    P(\mathbf{S}|\mathbf{V})\propto\psi(\mathbf{S})=\prod_{i}\psi_{i}(\mathbf{X},\mathbf{m},
+    \mathbf{Z},\mathbf{U})
+\end{align}
+对应的最大后验估计可以用因子图方式写为
+\begin{align} 
+    \mathbf{S}_{MAP}=\arg\max\limits_{s}\psi(\mathbf{S})
+\end{align}
+给定运动方程和观测方程：
+\begin{align} 
+    \mathbf{x}_{k}=g(\mathbf{x}_{k-1},\mathbf{u}_{k})+\mathbf{R}_{k} \\
+    \mathbf{z}_{k}=h(\mathbf{x}_{k},\mathbf{m}_{j})+\mathbf{Q}_{k}
+\end{align}
+假设运动噪声$\mathbf{R}_{k}$和观测噪声$\mathbf{Q}_{k}$都是0均值高斯噪声，噪声协方差矩阵分别用$\varSigma_
+{R_k}$和$\varSigma_{Q_k}$表示，用运动误差和观测误差分别来构造这两种因子项，运动约束的因子项和观测约束的因子
+项如下
+\begin{align} 
+    \Psi_{i1}(\mathbf{x}_{k},\mathbf{x}_{k-1})\propto e^{-\frac{1}{2}(\mathbf{x}_k-g(\mathbf{x}
+    _{k-1},\mathbf{u}_{k}))^{T}\varSigma_{R_{k}}^{-1}(\mathbf{x}_{k}-g(\mathbf{x}_{k-1},\mathbf{
+    u}_{k}))} \\
+    \Psi_{i2}(\mathbf{x}_{k},\mathbf{m}_{j})\propto e^{-\frac{1}{2}(\mathbf{z}_{k}-h(\mathbf{x}_k,
+    \mathbf{m}_{j}))^{T}\varSigma_{Q_k}^{-1}(\mathbf{z}_{k}-h(\mathbf{x}_k,\mathbf{m}_{j}))}
+\end{align}
+\begin{figure}[!htb]
+    \includegraphics[width=\hsize]{images/最小二乘对应的因子图.png}
+    \caption{最小二乘对应的因子图}
+\end{figure}
+\section{梯度、雅可比矩阵、海森矩阵}
+对于两个自变量为多维，因变量为一维和多维的函数表达如下所示：
+\begin{align}  
+    f(\mathbf{x})=f(x_1,x_2,\cdots,x_n) \\
+    f(\mathbf{x})=\left[\begin{array}{c}f_1(x_1,x_2,\cdots,x_n) \\
+        f_2(x_1,x_2,\cdots,x_n) \\ \cdots \\f_m(x_1,x_2,\cdots,x_n)
+    \end{array}\right] 
+\end{align}
+对于多维自变量和一维因变量的函数式，其一阶导数就是梯度，是一个与自变量x同维度的向量
+\begin{align} 
+    \mathbf{grad}=\nabla f(\mathbf{x})=\left[\begin{array}{c}
+    \frac{\partial f}{\partial x_1},\frac{\partial f}{\partial x_2},\cdots,
+    \frac{\partial f}{\partial x_3}\end{array}\right] 
+\end{align}
+函数的二阶导数就是海森矩阵，对一个n维自变量一维因变量的函数求导，一阶导数就是梯度(一个$n\times1$的向量)，对梯度再求
+一阶导数就是海森矩阵($n\times n$的矩阵)
+\begin{align} 
+    \mathbf{Hessian}&=\nabla^{2}f(\mathbf{x})=\nabla(\nabla f(\mathbf{x}))=\nabla(\mathbf{grad})=
+    \nabla\left(\left[\begin{array}{c}f_1(x_1,x_2,\cdots,x_n) \\f_2(x_1,x_2,\cdots,x_n) \\ 
+    \cdots \\f_m(x_1,x_2,\cdots,x_n)\end{array}\right]^{T}\right) \notag\\
+    &=\left[\begin{array}{cccc}\frac{\partial^{2}f}{\partial x_1\partial x_1} & 
+    \frac{\partial^{2}f}{\partial x_1\partial x_2} & \cdots & \frac{\partial^{2}f}{\partial x_1\partial x_n}\\
+    \frac{\partial^{2}f}{\partial x_2\partial x_1} & 
+    \frac{\partial^{2}f}{\partial x_2\partial x_2} & \cdots & \frac{\partial^{2}f}{\partial x_2\partial x_n}\\
+    \cdots & \cdots & \cdots & \cdots \\
+    \frac{\partial^{2}f}{\partial x_n\partial x_1} & 
+    \frac{\partial^{2}f}{\partial x_n\partial x_2} & \cdots & \frac{\partial^{2}f}{\partial x_n\partial x_n}\\
+    \end{array}\right]   
+\end{align}
+那么在多维自变量与因变量的函数式中的一阶导数就是雅可比矩阵，雅可比矩阵的每一行就是多维因变量中每一维梯度的转置，
+意思就是单独将每一维因变量看成一位因变量和多为自变量的梯度，然后拼接起来
+\begin{align} 
+    \mathbf{Jacobian}=\nabla f{x}=\left[\begin{array}{c}\mathbf{grad}_1^{T} \\
+    \mathbf{grad}_2^{T} \\ \cdots \\ \mathbf{grad}_{m}^{T}\end{array}\right]
+    =\left[\begin{array}{cccc}\frac{\partial f_1}{\partial x_1} & \frac{\partial f_1}{\partial x_2} &
+    \cdots & \frac{\partial f_1}{\partial x_n} \\
+    \frac{\partial f_2}{\partial x_1} & \frac{\partial f_2}{\partial x_2} &
+    \cdots & \frac{\partial f_2}{\partial x_n} \\
+    \cdots & \cdots & \cdots & \cdots \\
+    \frac{\partial f_m}{\partial x_1} & \frac{\partial f_m}{\partial x_2} &
+    \cdots & \frac{\partial f_m}{\partial x_n} \\
+    \end{array}\right]_{m\times n}
+\end{align}
+二阶导也可求，结果是由多个海森矩阵组成的一个大矩阵。
+\subsection{高斯-牛顿算法}
+高斯牛顿法是牛顿法在求解非线性最小二乘问题的特例，所以给出如下的非线性最小二乘代价函数
+\begin{align} 
+    \Psi(\mathbf{x})=\sum_{i}||\mathbf{y}_{i}-f(\mathbf{x_i})||_{\sum_{i}}^{2}=
+    \sum_{i=1}^{m}||e_i(\mathbf{x})||^{2}=||e(\mathbf{x})||^{2}=e(\mathbf{x})^{T}\cdot e(\mathbf{x})
+\end{align}
+其中，误差函数$e(\mathbf{x})$是多维自变量和多维因变量的函数，因变量$e(\mathbf{x})=[e_1(\mathbf{x}),\cdots,
+e_m(\mathbf{x})]^{T}$中的每个元素代表非线性最小二乘问题中的一个约束$(\varSigma_{i}^{-1/2})\cdot(y-f(x_i))$，
+自变量$\mathbf{x}$中每个元素代表一个待估计状态量。
+对上式中$\Psi(\mathbf{x})$进行二阶泰勒展开需要求出其一阶导数和二阶导数，给出$\Psi(\mathbf{x})$的一阶导数就是梯度，
+给出梯度向量中的第j行元素表达式
+\begin{align} 
+    \frac{\partial \Psi}{\partial\mathbf{x}_j}=\sum_{i=1}^{m}2\cdot e_{i}(\mathbf{x})\cdot 
+    \frac{\partial e_i(\mathbf{x})}{\partial\mathbf{x}_j}
+\end{align}
+可以观察得到，其中$\frac{\partial e_i(\mathbf{x})}{\partial\mathbf{x}_j}$代表雅可比矩阵中的元素，那么$\Psi(
+\mathbf{x})$就可以用$e(\mathbf{x})$函数的雅可比矩阵表示
+\begin{align} 
+    \underset{grad_{\Psi}}{\underbrace{\nabla\Psi}}=2\cdot\mathbf{Jacobian}_{e}^{T}\cdot e(\mathbf{x})
+\end{align}
+而$\Psi(\mathbf{x})$的二阶导数就是海森矩阵，给出海森矩阵中第k行第j列元素的表达式
+\begin{align} 
+    \frac{\partial^{2}\Psi}{\partial\mathbf{x}_{k}\partial\mathbf{x}_j}=\frac{\partial}{\partial
+    \mathbf{x}_k}(\frac{\partial\Psi}{\partial\mathbf{x}_j})=\frac{\partial}{\partial\mathbf{x}_k}
+    (\sum_{i=1}^{m}2\cdot e_i(\mathbf{x})\cdot\frac{\partial e_i(\mathbf{x})}{\partial\mathbf{x}_j})
+    =2\sum_{i=1}^{m}(\frac{\partial e_i(\mathbf{x})}{\partial\mathbf{x}_k}\cdot
+    \frac{\partial e_i(\mathbf{x})}{\partial\mathbf{x}_j}+\underset{\text{高阶项}S_{k,j}}
+    {\underbrace{e_i(\mathbf{x})\cdot\frac{\partial^{2}
+    e_i(\mathbf{x})}{\partial\mathbf{x}_k \partial\mathbf{x}_j}}})
+\end{align}
+通过观察可知$\frac{\partial e_i(\mathbf{x})}{\partial\mathbf{x}_k}$和$\frac{\partial e_i(\mathbf{x})}{\partial\mathbf{x}_j}$
+都代表雅可比矩阵中的元素，另外一部分是高阶项$S_{k,j}$，当迭代点离目标点比较近时，误差$e_i(\mathbf{x})$和二阶导数
+项都比较小，因此可以忽略，那么$\Psi(\mathbf{x})$的二阶导数也可以用$e(\mathbf{x})$函数的雅可比矩阵表示
+\begin{align} 
+    \nabla\Psi(\mathbf{x})\approx 2\cdot\mathbf{Jacobian}_{e}^{T}\cdot\mathbf{Jacobian}
+\end{align}
+那么对于$\Psi(\mathbf{x})$的二阶泰勒展开求极值有
+\begin{align} 
+    \nabla\Psi(\mathbf{x})\approx\text{二阶泰勒展开求梯度}\Leftrightarrow
+    2\cdot\mathbf{Jacobian}_{e}^{T}\cdot e(\mathbf{x}^{(k)})+2\cdot\mathbf{Jacobian}_{e}^{T}
+    \cdot\mathbf{Jacobian}_{e}\cdot(\mathbf{x}-\mathbf{x}^{(k)})=0
+\end{align}
+令$\Delta x=x-x^{(k)}$，那么：$\mathbf{J}_{e}^{T}\mathbf{J}_{e}\cdot\Delta\mathbf{x}=-\mathbf{J}_{e}^{T}
+\cdot\mathbf{e}$，那么求解这个方程就可以解出迭代更新量$\Delta\mathbf{x}$，下一步的迭代点就可以用下式计算
+\begin{align} 
+    \mathbf{x}^{(k+1)}=\mathbf{x}^{(k)}-(\mathbf{J}_{e(\mathbf{x}^{(k)})}^{T}\mathbf{J}_{e(\mathbf{x}^{(k)})}
+    )^{-1}\cdot\mathbf{J}_{e(\mathbf{x}^{(k)})}^{T}\cdot e(\mathbf{x}^{(k)})
+\end{align}
 
+\section{ORB特征}
+ORB特征由关键点和特征描述子构成，关键点为“Oriented FAST”，是一种改进的FAST角点，描述子称为BRIEF，提取FAST角点的步骤
+为
+\begin{enumerate}
+    \item 在图像中选取像素$p$，假设它的亮度为$I_p$
+    \item 设置一个阈值T（比如$I_p$的百分之二十）
+    \item 以像素$p$为中心选取半径为3的圆上的16个像素点
+    \item 假如选取的圆上有连续$N$个点的亮度大于$I_p+T$或者小于$I_p-T$，那么像素$p$被认为是特征点，（N的不同对应不同的算法）
+    \item 循环以上四个步骤，对每个像素执行相同操作
+\end{enumerate}
+为了更高效的计算，常常有预测试项和非极大值抑制等方法来改良角点提取的算法，除此之外为了让角点具有尺度和方向特性，通过构建图像
+金字塔和灰度质心法来增加尺度和方向信息。
 
+BRIEF描述子是一种二进制描述子，其描述向量由0和1构成
+
+\section{三角测量}
+前面用对极几何的方式估计了相机运动，在得到运动之后，需要用相机的运动估计特征点的空间位置，在单目SLAM中，需要通过\textbf{三角
+测量(三角化)}的方法估计地图点的深度
+
+设$\mathbf{x}_1,\mathbf{x}_2$为两个特征点的归一化坐标，它们满足
+\begin{align} 
+    s_2\mathbf{x}_2=s_1\mathbf{R}\mathbf{x}_1+\mathbf{t}
+\end{align}
+如果要求解两个特征点的深度$s_1,S_2$，在两式左乘一个$\mathbf{x}_{2}\sphat$
+\begin{align} 
+    s_2\mathbf{x}_{2}\sphat\mathbf{x}_{2}=0=s_1\mathbf{x}_2\sphat\mathbf{R}\mathbf{x}_1+\mathbf{x}_{2}
+    \sphat\mathbf{t}
+\end{align}
+
+注意：三角测量是由平移得到的，有平移才会有对极几何中的三角形，才有三角化，因此纯旋转是无法使用三角测量的。并且当平移很小的时候
+像素上的不确定性将导致较大的深度不确定性。因此要提高三角化的精度可以提高特征点的提取精度和使平移量增加，但这又会导致一些问题。
+
+\section{3D-2D:PnP}
+PnP是求解3D到2D点对运动的方法，2D-2D的对极几何的方法需要八个及其以上点对，且存在初始化，纯旋转和尺度问题。然而如果一直一张
+图片中特征点的3D位置，那么最少只需3个点对就可以估计相机运动，特征点的3D位置可以由三角化或者RGB-D相机的深度图确定。PnP有多种
+求解方法，如用3对点估计位姿的P3P、直接线性变换（DLT）、EPnP、UPnP等，还有非线性优化的方法。
+
+这里略过直接线性变换，简单阐述以下P3P
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[scale=1]{images/P3P.png}
+    \caption{P3P问题示意图}    
+\end{figure}
+
+根据相似三角形的原理有以下方程
+\begin{align} 
+    OA^{2}+OB^{2}-2OA\cdot OB\cdot\cos<a,b> =AB^{2} \notag \\
+    OB^{2}+OC^{2}-2OB\cdot OC\cdot\cos<b,c> =BC^{2}  \\
+    OA^{2}+OC^{2}-2OA\cdot OC\cdot\cos<a,c> =AC^{2} \notag  
+\end{align}
+对上三式全体除以$OC^{2}$，并且记$x=OA/OC,y=OB/OC$，$v=AB^{2}/OC^{2},uv=BC^{2}/OC^{2},wv=AC^{2}/OC^{2}$，有
+\begin{align} 
+    x^{2}+y^{2}-2xy\cos<a,b> -v=0 \notag \\
+    y^{2}+1-2y\cos<b,c> - uv=0 \\
+    x^{2}+1-2x\cos<a,c> - wv=0 \notag
+\end{align}
+将上面第一个式子的$v$放到一边，并带入后两式得
+\begin{align} 
+    (1-u)y^{2}-ux^{2}-\cos<b,c>y+2uxy\cos<a,b>+1=0 \notag \\
+    (1-w)x^{2}-wy^{2}-\cos<a,c>x+2wxy\cos<a,b>+1=0
+\end{align}
+注意方程中的已知量和未知量，该式子中的$x,y$是未知量，因此，该方程组是一个关于$x,y$的二元二次方程。这种方程的求解是一个复杂的过程，
+需要用吴消元法，该方程最多有四个解，可以用验证点来计算可能的解。但是这个方法存在一定的局限性
+\begin{enumerate}
+    \item P3P只用了3个点的信息，当给定多于三个点的时候难以利用更多的信息
+    \item 如果3D点或2D点受到噪声影响，或者存在误匹配，则算法失效
+\end{enumerate}
+所以提出了一些后续改进方法，如EPnP、UPnP等。接下来讨论非线性优化的角度来看待PnP问题
+\section{最小化重投影误差求解PnP}
+前面所说的线性方法，往往是先求相机位姿，再求空间点位置，而非线性优化则是把它们都看成优化变量，放在一起优化，这一类把
+相机和三维点放在一起进行最小化的方法广泛统称为BA(Bundle Adjustment)。
+
+根据前面所学的知识，像素位置与空间位置的关系如下
+\begin{align} 
+    s_i\mathbf{u}_i=\mathbf{K}\mathbf{T}\mathbf{P}_i 
+\end{align} 
 
 
 
