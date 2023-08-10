@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  5 AUG 2023 18:36
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  10 AUG 2023 17:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -584,17 +584,25 @@ Package hyperref Info: Link coloring OFF on input line 17.
 
  [1
 
-] [2] [3] [4] (./slam题.aux)
+] [2] [3]
+LaTeX Font Info:    Trying to load font information for U+msa on input line 182.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 182.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [4] [5] (./slam题.aux)
 Package rerunfilecheck Info: File `slam题.out' has not changed.
-(rerunfilecheck)             Checksum: D3AB52325FDEFAB0C0948A5D67C7D5E2;1766.
+(rerunfilecheck)             Checksum: 90ECD857C5F9BD4CA0BDE5DD722450E4;2382.
  ) 
 Here is how much of TeX's memory you used:
- 16045 strings out of 476683
- 349317 string characters out of 5804047
+ 16146 strings out of 476683
+ 354414 string characters out of 5804047
  1876018 words of memory out of 5000000
- 36087 multiletter control sequences out of 15000+600000
- 517391 words of font info for 50 fonts, out of 8000000 for 9000
+ 36167 multiletter control sequences out of 15000+600000
+ 519130 words of font info for 63 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 89i,6n,97p,362b,423s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,9n,97p,362b,423s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on slam题.pdf (4 pages).
+Output written on slam题.pdf (5 pages).
