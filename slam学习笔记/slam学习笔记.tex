@@ -945,6 +945,30 @@ PnP是求解3D到2D点对运动的方法，2D-2D的对极几何的方法需要�
 \begin{align} 
     s_i\mathbf{u}_i=\mathbf{K}\mathbf{T}\mathbf{P}_i 
 \end{align} 
+\section{高精度地图的全局规划路径算法有哪些}
+\begin{enumerate}
+    \item Dijkstra
+    \item BFS(Best-First-Search)
+    \item A*
+    \item hybrid A*
+    \item D*
+    \item RRT 
+    \item RRT*
+    \item 蚁群算法
+    \item Rectangular Symmetry Reduction(RSR)
+    \item BUG
+    \item Beam Search
+    \item Iterative Deepeningc
+\end{enumerate}
+目前主流的还是深度优先搜索、广度优先搜索、A*和Digkstra
+\section{路径规划的主要内容有哪些}
+路径规划分为：寻路(Routing)、决策(Behavioral Decision)、运动规划(Motion Planning)。
+寻路主要是全局路径规划，现阶段主要为传统导航地图(SD地图)和高精度地图结合进行路径规划；决策主要
+为在遇到交通灯和行人时的避让、高速路分流合流的选择、以及路口时转向判断等；运动规划是指局部路径
+规划，判断前方几百米内的期望行驶路径，需结合汽车运动学、动力学、舒适性和无碰撞等要求。
+\section{什么是RRT算法}
+RRT算法主要原理是基于采样的算法，把起始点作为一颗种子，向下生长枝丫，像树一样的路径以搜索空间
+的大部分区域，快速的进行扩张，伺机找到目标点，但找到的路径质量不高，通常不是最优路径。
 
 
 
