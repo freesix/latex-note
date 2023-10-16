@@ -22,4 +22,18 @@
   url           = {http://arxiv.org/abs/1706.03762},
 }
 
+@Article{Yi2017,
+  author        = {Kwang Moo Yi and Eduard Trulls and Yuki Ono and Vincent Lepetit and Mathieu Salzmann and Pascal Fua},
+  journal       = {CoRR},
+  title         = {Learning to Find Good Correspondences},
+  year          = {2017},
+  volume        = {abs/1711.05971},
+  archiveprefix = {arXiv},
+  bibsource     = {dblp computer science bibliography, https://dblp.org},
+  biburl        = {https://dblp.org/rec/journals/corr/abs-1711-05971.bib},
+  eprint        = {1711.05971},
+  timestamp     = {Mon, 13 Aug 2018 16:47:15 +0200},
+  url           = {http://arxiv.org/abs/1711.05971},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

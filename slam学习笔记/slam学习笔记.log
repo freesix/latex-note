@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  11 AUG 2023 16:31
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  12 AUG 2023 15:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -597,11 +597,11 @@ Overfull \hbox (5.45532pt too wide) in paragraph at lines 72--74
 []\TU/FandolSong-Regular(0)/m/n/10 上 述 坐 标 系 之 间 的 变 换 关 系 在 实 现 多 次 变 换 时 会 显 得 十 分 繁 琐，|  如 进 行 了 两 次 变 换 的 表 达 式 为 $[] \OT1/cmr/m/n/10 = [][]([][][] +
  []
 
-[2] [3] [4]
+[2] [3] [4] [5]
 LaTeX Font Info:    Trying to load font information for U+euf on input line 295.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/ueuf.fd
 File: ueuf.fd 2013/01/14 v3.01 Euler Fraktur
-) [5]
+)
 Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
 Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
 Missing character: There is no ^^H (U+0008) in font [lmromandemi10-regular]:mapping=tex-text;!
@@ -657,22 +657,16 @@ File: images/最小二乘对应的因子图.png Graphic file (type bmp)
 File: images/P3P.png Graphic file (type bmp)
 <images/P3P.png>
  [20] [21] [22] (./slam学习笔记.aux)
-
-Package rerunfilecheck Warning: File `slam学习笔记.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `slam学习笔记.out':
-(rerunfilecheck)             Before: 79C790C57AB9423DA9DDDA340E1298AB;2681
-(rerunfilecheck)             After:  49741FF749118F7A9C48FDD2111DA21C;2822.
+Package rerunfilecheck Info: File `slam学习笔记.out' has not changed.
+(rerunfilecheck)             Checksum: B7084323399688355E34155744D19A58;3059.
  ) 
 Here is how much of TeX's memory you used:
  16334 strings out of 476683
  360641 string characters out of 5804047
- 1880018 words of memory out of 5000000
+ 1879018 words of memory out of 5000000
  36321 multiletter control sequences out of 15000+600000
  519918 words of font info for 76 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 89i,26n,97p,365b,413s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,26n,97p,365b,354s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on slam学习笔记.pdf (22 pages).

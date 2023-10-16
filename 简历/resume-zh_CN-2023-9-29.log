@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  7 OCT 2023 13:08
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  13 OCT 2023 13:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**resume-zh_CN
-(./resume-zh_CN.tex
+**resume-zh_CN-2023-9-29
+(./resume-zh_CN-2023-9-29.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22> (./resume.cls
 Document Class: resume 2015/05/25 An elegant Résumé class
@@ -722,8 +722,8 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box75
 \@float@everytoks=\toks42
 \@floatcapt=\box76
-) (./resume-zh_CN.aux)
-\openout1 = `resume-zh_CN.aux'.
+) (./resume-zh_CN-2023-9-29.aux)
+\openout1 = `resume-zh_CN-2023-9-29.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
 LaTeX Font Info:    ... okay on input line 31.
@@ -841,9 +841,9 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 31.
-(./resume-zh_CN.out) (./resume-zh_CN.out)
+(./resume-zh_CN-2023-9-29.out) (./resume-zh_CN-2023-9-29.out)
 \@outlinefile=\write4
-\openout4 = `resume-zh_CN.out'.
+\openout4 = `resume-zh_CN-2023-9-29.out'.
 
 
 Package fontspec Info: Could not resolve font "Adobe Heiti Std/BI" (it
@@ -885,45 +885,46 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 74.
+(hyperref)                removing `\FA' on input line 75.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 82.
+(hyperref)                removing `\FA' on input line 83.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 94.
+(hyperref)                removing `\FA' on input line 95.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 115.
-(/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 115.
- (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+[1
 
 ]
+LaTeX Font Info:    Trying to load font information for U+msa on input line 123.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 123.
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 157.
+(hyperref)                removing `\FA' on input line 151.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 164.
+(hyperref)                removing `\FA' on input line 158.
 
-[2] (./resume-zh_CN.aux)
-Package rerunfilecheck Info: File `resume-zh_CN.out' has not changed.
-(rerunfilecheck)             Checksum: 3C1D655796FA8D77DA3FD2033584A09B;2388.
+[2] (./resume-zh_CN-2023-9-29.aux)
+Package rerunfilecheck Info: File `resume-zh_CN-2023-9-29.out' has not changed.
+(rerunfilecheck)             Checksum: 2B1F3927BAC152A796998850DDD0613E;2388.
  ) 
 Here is how much of TeX's memory you used:
  27211 strings out of 476683
- 571813 string characters out of 5804047
- 1888018 words of memory out of 5000000
+ 571983 string characters out of 5804047
+ 1889018 words of memory out of 5000000
  46962 multiletter control sequences out of 15000+600000
  518197 words of font info for 96 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 102i,6n,105p,419b,537s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,6n,105p,429b,537s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on resume-zh_CN.pdf (2 pages).
+Output written on resume-zh_CN-2023-9-29.pdf (2 pages).

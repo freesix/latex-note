@@ -65,7 +65,8 @@ SLAM、点云的图算法、脑机接口、图像拼接
 \datedsubsection{\textbf{上海芯圣电子股份有限公司}}{2020年5月 -- 2021年8月}
 FAE工程师\qquad 总经理室
 \begin{itemize}
-  \item 发挥FAE的技术能力和经验，协助客户工程人员在方案中导入芯片。
+  \item 参与便携式血氧仪，触摸控制板，锂电充手电等项目的开发和立项开发。
+  \item 对嵌入式工程师的工作进行技术支持，解决客户在使用产品过程中遇到的软硬件问题。
   \item 负责客户技术人员的技术培训，帮助其提高对产品的认知，培养对我方产品的使用习惯。
   \item 内部营销人员、新员工的技术培训，围绕本公司产品撰写对外教材和录制培训视频。
   \item 产品的应用开发，编写示例代码、设计demo板。
@@ -83,39 +84,15 @@ FAE工程师\qquad 总经理室
 % increase linespacing [parsep=0.5ex]
 \begin{itemize}[parsep=0.5ex]
   \item Python、C、C++、LaTex、Matlab、Linux、ROS2、Pytorch
-  \item 了解李群李代数、对极几何、图优化、EKF等，对相应算法库Eigen、g2o、OpenCV等有一定使用
-  \item 了解LIO-slam、Point-LIO、Far-planner、ORB\_SLAM3框架，实现过算法仿真
+  \item 熟悉51、STM32等单片机的开发，熟悉Keil、Altium Designer等软件的使用
+  % \item 对图像拼接有一定了解，有在研项目支持
   \item 对图神经网络和图匹配相关算法有一定了解，并用于点云匹配的研究，学习过Point-GNN等框架
-  \item 对图像拼接有一定了解，有在研项目支持
-
+  \item 了解李群李代数、对极几何、图优化、EKF等，对相应算法库Eigen、g2o、OpenCV等有一定使用
+  \item 了解ORB\_SLAM3、Point-LIO、Far-planner、LIO-slam框架，实现过算法仿真
 \end{itemize}
 
 
 \section{\textcolor[RGB]{50,50,190}{\faUsers\ 科研 / 项目经历}}
-
-% \end{itemize}
-
-\datedsubsection{\textbf{多曲面图像拼接补全算法设计}--西南民族大学(横向项目)}{2022年12月 -- 至今}
-\textcolor[RGB]{80,100,190}{\textbf{项目链接}}：\hyperlink{https://github.com/freesix/GNN-martch}
-{https://github.com/freesix/GNN-martch}
-
-% \begin{itemize}
-\textcolor[RGB]{80,100,190}{\textbf{项目简介}}：
-将曲面上的16块CMOS芯片所成图像拼接成一幅完整且清晰的图像。解决成像平面和曲面之间的高度差
-所带来的图像失焦、畸变、像素盲区等问题，图像拼接先进算法的研究和实现。
-
-\textcolor[RGB]{80,100,190}{\textbf{工作内容}}：
-设计先进\textbf{图匹配算法}用于\textbf{图像拼接的配准步骤和点云配准}，借助图神经网络、最大
-团匹配、因子图分解等方法以提升图匹配的精度和鲁棒性。
-% 根据横向项目的需求制定技术路线，撰写需求分析、技术目标等文档，整体拼接算法路线制定，图像匹配
-% 部分算法的研究和实现、深度模型的设计和训练等。后续估计失焦图像的PSF用于模糊图像恢复，对畸变
-% 图像设计畸变模型估计畸变参数。
-
-\textcolor[RGB]{80,100,190}{\textbf{工作成果}}：
-论文$\ll$ Image Stitching with Weight Learnable Graph Matching Network$\gg$(暂定)，
-% 图像配准的性能远高于传统KNN+RANSAC算法或SuperGlue等学习方法。
-提出了一种权重可学习的图注意力机制用于图像拼接的配准步骤，图像配准的性能优于传统的KNN+RANSAC
-算法或SuperGlue等学习方法。
 
 \datedsubsection{\textbf{便携式血氧仪算法和硬件改进}--上海芯圣电子股份有限公司}{2020年7月 -- 2021年8月}
 % \begin{itemize}
@@ -129,7 +106,24 @@ FAE工程师\qquad 总经理室
 
 \textcolor[RGB]{80,100,190}{\textbf{工作成果}}：
 成功将自研芯片融入方案，改进算法和增加异常处理等，制作demo板并成功进入医疗器械审查阶段。
+% \end{itemize}
 
+\datedsubsection{\textbf{多曲面图像拼接补全算法设计}--西南民族大学(横向项目)}{2022年12月 -- 至今}
+% \begin{itemize}
+\textcolor[RGB]{80,100,190}{\textbf{项目简介}}：
+将曲面上的16块CMOS芯片所成图像拼接成一幅完整且清晰的图像。解决成像平面和曲面之间的高度差
+所带来的图像失焦、畸变、像素盲区等问题，图像拼接先进算法的研究和实现。
+
+\textcolor[RGB]{80,100,190}{\textbf{工作内容}}：
+根据横向项目的需求制定技术路线，撰写需求分析、技术目标等文档，整体拼接算法路线制定，图像匹配
+部分算法的研究和实现、深度模型的设计和训练等。后续估计失焦图像的PSF用于模糊图像恢复，对畸变
+图像设计畸变模型估计畸变参数。
+
+\textcolor[RGB]{80,100,190}{\textbf{工作成果}}：
+论文$\ll$ Image Stitching with Weight Learnable Graph Matching Network$\gg$(暂定)，
+% 图像配准的性能远高于传统KNN+RANSAC算法或SuperGlue等学习方法。
+提出了一种权重可学习的图注意力机制用于图像拼接的配准步骤，图像配准的性能优于传统的KNN+RANSAC
+算法或SuperGlue等学习方法。
 
 \datedsubsection{\textbf{锂电充手电开发}--上海芯圣电子股份有限公司}{2020年12月 -- 2021年8月}
 % \begin{itemize}
