@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  1 NOV 2023 15:53
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.21)  10 DEC 2023 15:27
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -885,50 +885,56 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 83.
+(hyperref)                removing `\FA' on input line 82.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 91.
+(hyperref)                removing `\FA' on input line 99.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 104.
+(hyperref)                removing `\FA' on input line 112.
 
 [1
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 154.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 162.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 154.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 162.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 153--159
+Underfull \hbox (badness 10000) in paragraph at lines 161--167
 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 160.
+(hyperref)                removing `\FA' on input line 168.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\FA' on input line 167.
+(hyperref)                removing `\FA' on input line 175.
 
 [2] (./resume-zh_CN-2023-9-29.aux)
-Package rerunfilecheck Info: File `resume-zh_CN-2023-9-29.out' has not changed.
-(rerunfilecheck)             Checksum: 38E278CB0E69F227B786082010D933A3;2388.
+
+Package rerunfilecheck Warning: File `resume-zh_CN-2023-9-29.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `resume-zh_CN-2023-9-29.out':
+(rerunfilecheck)             Before: 38E278CB0E69F227B786082010D933A3;2388
+(rerunfilecheck)             After:  4B2342719F41D9E032B952E7584D50E4;2364.
  ) 
 Here is how much of TeX's memory you used:
  27211 strings out of 476683
  571983 string characters out of 5804047
- 1895018 words of memory out of 5000000
+ 1890018 words of memory out of 5000000
  46962 multiletter control sequences out of 15000+600000
  518197 words of font info for 96 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 102i,6n,105p,429b,537s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,5n,105p,429b,537s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on resume-zh_CN-2023-9-29.pdf (2 pages).
